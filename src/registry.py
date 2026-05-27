@@ -159,19 +159,24 @@ def inferir_clientes(modelo, scaler: StandardScaler) -> None:
     ]
 
     for c in clientes_novos:
-        # Feature engineering básico
-        ratio  = c["renda_mensal"] / (c["num_produtos"] + 1)
+        vetor_raw = [[
+            c["idade"], c["renda_mensal"], c["score_credito"],
+            c["tempo_relacionamento_anos"], c["num_produtos"]
+        ]]
+        vetor_scaled = scaler.transform(vetor_raw)[0]
+
+        # Adicionar features derivadas
+        ratio   = c["renda_mensal"] / (c["num_produtos"] + 1)
         score_n = c["score_credito"] / 1000
         valor   = score_n * 0.4 + (c["renda_mensal"] / 25000) * 0.3 + (c["tempo_relacionamento_anos"] / 20) * 0.3
 
-        vetor = [[
-            c["idade"], c["renda_mensal"], c["score_credito"],
-            c["tempo_relacionamento_anos"], c["num_produtos"],
+        X_final = np.array([[
+            vetor_scaled[0], vetor_scaled[1], vetor_scaled[2],
+            vetor_scaled[3], vetor_scaled[4],
             ratio, score_n, valor
-        ]]
+        ]])
 
-        X_scaled = scaler.transform(vetor)
-        cluster  = modelo.fit_predict(X_scaled)[0]
+        cluster  = modelo.fit_predict(X_final)[0]
         segmento = SEGMENTOS.get(int(cluster), f"Cluster {cluster}")
 
         print(f"  {c['nome']:10} | Renda: R${c['renda_mensal']:>7,.0f} | "
@@ -192,12 +197,12 @@ def pipeline_registry():
 
     X = pd.read_csv(path).values
 
-    # Carregar scaler original (recriamos para inferência)
-    df_raw  = pd.read_csv(ROOT / "data" / "clientes_raw.csv")
-    scaler  = StandardScaler()
-    cols    = ["idade", "renda_mensal", "score_credito",
-               "tempo_relacionamento_anos", "num_produtos"]
-    scaler.fit(df_raw[cols])
+    # Carregar scaler com todas as 8 features de clustering
+    df_features = pd.read_csv(ROOT / "data" / "clientes_features.csv")
+    df_raw      = pd.read_csv(ROOT / "data" / "clientes_raw.csv")
+    scaler      = StandardScaler()
+    scaler.fit(df_raw[["idade", "renda_mensal", "score_credito",
+                        "tempo_relacionamento_anos", "num_produtos"]])
 
     # Executar pipeline
     registrar_modelo(X)
