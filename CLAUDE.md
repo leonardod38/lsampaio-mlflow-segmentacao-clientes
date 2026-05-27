@@ -5,7 +5,7 @@
 - **Autor:** Leonardo Sampaio (leonardod38)
 - **Objetivo:** Pipeline MLOps completo de segmentação de clientes bancários
 - **Repositório local:** E:\Claude\lsampaio-mlflow-segmentacao-clientes
-- **VM GCP:** 35.184.43.161 (us-central1-a, e2-medium, Ubuntu 26.04 LTS)
+- **VM GCP:** 34.66.68.60 (us-central1-a, e2-medium, Ubuntu 26.04 LTS)
 
 ## Stack
 - Python 3.14
@@ -19,7 +19,7 @@
 # MobaXterm local terminal
 gcp
 # expande para:
-ssh -F /dev/null -i ~/.ssh/mlflow-gcp leonardod38@35.184.43.161
+ssh -F /dev/null -i ~/.ssh/mlflow-gcp leonardod38@34.66.68.60
 ```
 
 ## Subir MLflow server na VM
@@ -36,7 +36,7 @@ mlflow server \
 
 ## MLflow UI
 ```
-http://35.184.43.161:5000
+http://34.66.68.60:5000
 ```
 
 ## Estrutura do projeto

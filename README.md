@@ -90,11 +90,11 @@ http://localhost:5000
 
 | Algoritmo | Melhor config | Silhouette | Davies-Bouldin |
 |---|---|---|---|
-| K-Means | k=5 | — | — |
-| DBSCAN | eps=0.5 | — | — |
-| Agglomerative | k=5, ward | — | — |
+| K-Means | k=5 | 0.2542 | 1.4262 |
+| **DBSCAN** | **eps=0.5, min=5** | **0.4702** ✅ | **0.7721** ✅ |
+| Agglomerative | k=5, ward | 0.2267 | 1.4575 |
 
-> Tabela será atualizada após execução completa do pipeline.
+> **Melhor algoritmo: DBSCAN** — silhouette score quase o dobro do KMeans, identificando clusters naturais sem necessidade de definir k previamente.
 
 ## Infraestrutura GCP
 
