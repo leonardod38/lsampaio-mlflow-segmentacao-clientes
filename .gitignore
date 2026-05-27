@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# MLflow
+mlruns/
+mlflow.db
+mlflow-artifacts/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Data (raw data não vai pro Git)
+data/raw/
+data/*.csv
+data/*.parquet
+
+# Reports gerados
+reports/figures/*.png
+reports/*.html
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env vars
+.env
+*.env

@@ -1,0 +1,15 @@
+name: lsampaio-mlflow-segmentacao-clientes
+
+entry_points:
+  main:
+    parameters:
+      n_clusters_min: {type: int, default: 2}
+      n_clusters_max: {type: int, default: 10}
+      algoritmo: {type: str, default: "kmeans"}
+    command: "python src/train.py --n_clusters_min {n_clusters_min} --n_clusters_max {n_clusters_max} --algoritmo {algoritmo}"
+
+  feature_engineering:
+    command: "python src/feature_engineering.py"
+
+  avaliar:
+    command: "python src/avaliar.py"
