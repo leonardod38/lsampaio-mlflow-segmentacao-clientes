@@ -11,7 +11,12 @@ from sklearn.preprocessing import StandardScaler
 from pathlib import Path
 
 TRACKING_URI = "http://127.0.0.1:5000"
-EXPERIMENT  = "segmentacao-clientes-bancarios"
+EXPERIMENT   = "segmentacao-clientes-bancarios"
+
+# Raiz do projeto (sempre relativa ao arquivo atual)
+ROOT = Path(__file__).resolve().parent.parent
+DATA_DIR    = ROOT / "data"
+REPORTS_DIR = ROOT / "reports" / "figures"
 
 
 def tratar_outliers(df: pd.DataFrame, colunas: list) -> pd.DataFrame:
@@ -43,7 +48,7 @@ def criar_features_derivadas(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 def gerar_graficos_eda(df: pd.DataFrame, features: list) -> list:
-    Path("reports/figures").mkdir(parents=True, exist_ok=True)
+    REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     artefatos = []
 
     # 1 — Heatmap de correlação
@@ -52,7 +57,7 @@ def gerar_graficos_eda(df: pd.DataFrame, features: list) -> list:
     sns.heatmap(corr, annot=True, fmt=".2f", cmap="coolwarm",
                 center=0, ax=ax, linewidths=0.5)
     ax.set_title("Matriz de Correlação — Features de Clustering", fontsize=13)
-    path = "reports/figures/heatmap_correlacao.png"
+    path = str(REPORTS_DIR / "heatmap_correlacao.png")
     plt.tight_layout()
     plt.savefig(path, dpi=150)
     plt.close()
@@ -68,7 +73,7 @@ def gerar_graficos_eda(df: pd.DataFrame, features: list) -> list:
         axes[i].spines[["top", "right"]].set_visible(False)
     plt.suptitle("Distribuição das Features", fontsize=14, y=1.01)
     plt.tight_layout()
-    path = "reports/figures/distribuicao_features.png"
+    path = str(REPORTS_DIR / "distribuicao_features.png")
     plt.savefig(path, dpi=150, bbox_inches="tight")
     plt.close()
     artefatos.append(path)
@@ -83,7 +88,7 @@ def gerar_graficos_eda(df: pd.DataFrame, features: list) -> list:
         axes[i].set_xlabel("Inadimplente (0=Não, 1=Sim)")
     plt.suptitle("Features por Status de Inadimplência", fontsize=13)
     plt.tight_layout()
-    path = "reports/figures/boxplot_inadimplencia.png"
+    path = str(REPORTS_DIR / "boxplot_inadimplencia.png")
     plt.savefig(path, dpi=150, bbox_inches="tight")
     plt.close()
     artefatos.append(path)
@@ -100,7 +105,8 @@ def pipeline_feature_engineering():
     with mlflow.start_run(run_name="fase1_feature_engineering"):
         # Gerar e salvar dados brutos
         df_raw = gerar_dataset()
-        df_raw.to_csv("data/clientes_raw.csv", index=False)
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        df_raw.to_csv(DATA_DIR / "clientes_raw.csv", index=False)
 
         # Feature engineering
         features_numericas = [
@@ -119,7 +125,7 @@ def pipeline_feature_engineering():
         scaler = StandardScaler()
         X_scaled = scaler.fit_transform(df[features_clustering])
         df_scaled = pd.DataFrame(X_scaled, columns=features_clustering)
-        df_scaled.to_csv("data/clientes_features.csv", index=False)
+        df_scaled.to_csv(DATA_DIR / "clientes_features.csv", index=False)
 
         # Logar parâmetros
         mlflow.log_param("n_amostras", len(df))
