@@ -96,6 +96,20 @@ http://localhost:5000
 
 > **Melhor algoritmo: DBSCAN** — silhouette score quase o dobro do KMeans, identificando clusters naturais sem necessidade de definir k previamente.
 
+## Screenshots — MLflow UI
+
+### Comparação de métricas entre algoritmos
+![Evaluation Runs](docs/screenshots/evaluation_runs.png)
+
+### Modelo de produção — parâmetros e métricas
+![Modelo Producao](docs/screenshots/modelo_producao.png)
+
+### Model Registry — versão 2 em Production
+![Model Registry](docs/screenshots/model_registry.png)
+
+### Artefatos do modelo registrado
+![Artifacts](docs/screenshots/model_artifacts.png)
+
 ## Infraestrutura GCP
 
 - **Máquina:** e2-medium (2 vCPU, 4GB RAM)
