@@ -41,21 +41,22 @@ pip install -q mlflow scikit-learn pandas numpy matplotlib seaborn scipy
 
 # 4 — Criar pastas necessárias
 echo "[4/5] Criando estrutura de pastas..."
+cd "$PROJECT_DIR"
 mkdir -p data reports/figures
 
-# 5 — Rodar pipeline completo
+# 5 — Rodar pipeline completo (sempre da raiz do projeto)
 echo "[5/5] Executando pipeline..."
 echo ""
 echo "▶ Fase 1 — Feature Engineering..."
-cd "$PROJECT_DIR/src" && python feature_engineering.py
+python src/feature_engineering.py
 
 echo ""
 echo "▶ Fase 2 — Treinamento dos algoritmos..."
-python train.py --algoritmo todos
+python src/train.py --algoritmo todos
 
 echo ""
 echo "▶ Fase 3 — Avaliação comparativa..."
-python avaliar.py
+python src/avaliar.py
 
 echo ""
 echo "=============================================="
