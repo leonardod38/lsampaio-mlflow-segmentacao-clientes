@@ -59,6 +59,10 @@ echo "▶ Fase 3 — Avaliação comparativa..."
 python src/avaliar.py
 
 echo ""
+echo "▶ Fase 4 — Model Registry + Serving..."
+python src/registry.py
+
+echo ""
 echo "=============================================="
 echo "  Pipeline concluído!"
 echo "  MLflow UI: http://$(curl -s ifconfig.me):5000"
